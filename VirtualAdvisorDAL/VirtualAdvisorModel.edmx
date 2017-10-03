@@ -1,0 +1,2219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VirtualAdvisor2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'VirtualAdvisor2.dbo.AdvisorExport' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="AdvisorExport">
+          <Property Name="StaffId" Type="float" />
+          <Property Name="PersonId" Type="float" />
+          <Property Name="StaffTypeId" Type="nvarchar(max)" />
+          <Property Name="StaffPhone" Type="nvarchar(max)" />
+          <Property Name="StaffEmail" Type="nvarchar(max)" />
+          <Property Name="OfficeBuilding" Type="nvarchar(max)" />
+          <Property Name="OfficeNumber" Type="nvarchar(max)" />
+        </EntityType>-->
+        <EntityType Name="AdvisorStudent">
+          <Key>
+            <PropertyRef Name="AdvisorStudentId" />
+          </Key>
+          <Property Name="AdvisorStudentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StaffId" Type="int" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Calendar">
+          <Key>
+            <PropertyRef Name="CalendarId" />
+          </Key>
+          <Property Name="CalendarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UniversityId" Type="int" Nullable="false" />
+          <Property Name="EventTypeId" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+          <Property Name="AllDay" Type="bit" />
+          <Property Name="CalendarDescription" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DegreePlanId" Type="int" Nullable="false" />
+          <Property Name="CourseName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="CourseDescription" Type="varchar" MaxLength="200" />
+          <Property Name="CreditHours" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="CourseCode" Type="varchar" MaxLength="80" />
+        </EntityType>
+        <EntityType Name="CoursePrerequisite">
+          <Key>
+            <PropertyRef Name="CoursePrerequisiteId" />
+          </Key>
+          <Property Name="CoursePrerequisiteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="RequiredCourseId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DegreePlan">
+          <Key>
+            <PropertyRef Name="DegreePlanId" />
+          </Key>
+          <Property Name="DegreePlanId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UniversityId" Type="int" Nullable="false" />
+          <Property Name="DegreeName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="DegreeDescription" Type="varchar" MaxLength="100" />
+          <Property Name="CreditHoursRequired" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Enrollment">
+          <Key>
+            <PropertyRef Name="EnrollmentId" />
+          </Key>
+          <Property Name="EnrollmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SectionId" Type="int" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'VirtualAdvisor2.dbo.EnrollmentGrade' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="EnrollmentGrade">
+          <Key>
+            <PropertyRef Name="EnrollmentId" />
+            <PropertyRef Name="StaffId" />
+            <PropertyRef Name="CreditHoursAttempted" />
+            <PropertyRef Name="CreditHoursEarned" />
+          </Key>
+          <Property Name="EnrollmentId" Type="int" Nullable="false" />
+          <Property Name="StaffId" Type="int" Nullable="false" />
+          <Property Name="CreditHoursAttempted" Type="int" Nullable="false" />
+          <Property Name="CreditHoursEarned" Type="int" Nullable="false" />
+          <Property Name="Grade" Type="varchar" MaxLength="3" />
+        </EntityType>
+        <EntityType Name="EnrollmentStatus">
+          <Key>
+            <PropertyRef Name="EnrollmentId" />
+            <PropertyRef Name="EnrollmentStatusCode" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="EnrollmentId" Type="int" Nullable="false" />
+          <Property Name="EnrollmentStatusCode" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EnrollmentStatusCode">
+          <Key>
+            <PropertyRef Name="EnrollmentStatusCodeId" />
+          </Key>
+          <Property Name="EnrollmentStatusCodeId" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="EnrollmentStatusDescription" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EventType">
+          <Key>
+            <PropertyRef Name="EventTypeId" />
+          </Key>
+          <Property Name="EventTypeId" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="EventTypeDescription" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="GradingScale">
+          <Key>
+            <PropertyRef Name="Grade" />
+          </Key>
+          <Property Name="Grade" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="NumericValue" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="AffectsGPA" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="MiddleInitial" Type="varchar" MaxLength="1" />
+          <Property Name="LastName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="StreetAddress" Type="varchar" MaxLength="80" />
+          <Property Name="City" Type="varchar" MaxLength="80" />
+          <Property Name="StateName" Type="varchar" MaxLength="30" />
+          <Property Name="ZipCode" Type="varchar" MaxLength="15" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="Email" Type="varchar" MaxLength="80" />
+        </EntityType>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="SectionId" />
+          </Key>
+          <Property Name="SectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SectionName" Type="nvarchar" MaxLength="20" />
+          <Property Name="TermId" Type="int" Nullable="false" />
+          <Property Name="StaffId" Type="int" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="MaxStudents" Type="int" />
+        </EntityType>
+        <EntityType Name="SectionRating">
+          <Key>
+            <PropertyRef Name="RatingId" />
+          </Key>
+          <Property Name="RatingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SectionId" Type="int" Nullable="false" />
+          <Property Name="RatingScaleId" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="RatingDate" Type="datetime" />
+          <Property Name="Comments" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="SectionRatingScale">
+          <Key>
+            <PropertyRef Name="SectionRatingScaleId" />
+          </Key>
+          <Property Name="SectionRatingScaleId" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="SectionRatingValue" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="SectionRatingScaleDescription" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="StaffId" />
+          </Key>
+          <Property Name="StaffId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="StaffTypeId" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="StaffPhone" Type="varchar" MaxLength="20" />
+          <Property Name="StaffEmail" Type="varchar" MaxLength="100" />
+          <Property Name="OfficeBuilding" Type="varchar" MaxLength="20" />
+          <Property Name="OfficeNumber" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="StaffStatus">
+          <Key>
+            <PropertyRef Name="StaffId" />
+            <PropertyRef Name="StaffStatusCodeId" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="StaffId" Type="int" Nullable="false" />
+          <Property Name="StaffStatusCodeId" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StaffStatusCode">
+          <Key>
+            <PropertyRef Name="StaffStatusCodeId" />
+          </Key>
+          <Property Name="StaffStatusCodeId" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="StaffStatusDescription" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="StaffType">
+          <Key>
+            <PropertyRef Name="StaffTypeId" />
+          </Key>
+          <Property Name="StaffTypeId" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="StaffTypeDescription" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UniversityId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="DegreePlanId" Type="int" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="80" />
+        </EntityType>
+        <EntityType Name="StudentDegreePlan">
+          <Key>
+            <PropertyRef Name="StudentDegreePlanId" />
+          </Key>
+          <Property Name="StudentDegreePlanId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="DegreePlan" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="StudentStatus">
+          <Key>
+            <PropertyRef Name="StudentId" />
+            <PropertyRef Name="StudentStatusCodeId" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="StudentStatusCodeId" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentStatusCode">
+          <Key>
+            <PropertyRef Name="StudentStatusCodeId" />
+          </Key>
+          <Property Name="StudentStatusCodeId" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="StudentStatusDescription" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Term">
+          <Key>
+            <PropertyRef Name="TermId" />
+          </Key>
+          <Property Name="TermId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UniversityId" Type="int" Nullable="false" />
+          <Property Name="TermAbbreviation" Type="varchar" MaxLength="10" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+          <Property Name="DropDate" Type="datetime" Nullable="false" />
+          <Property Name="WithdrawalDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="University">
+          <Key>
+            <PropertyRef Name="UniversityId" />
+          </Key>
+          <Property Name="UniversityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UniversityName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="StreetAddress" Type="varchar" MaxLength="80" />
+          <Property Name="City" Type="varchar" MaxLength="80" />
+          <Property Name="StateName" Type="varchar" MaxLength="30" />
+          <Property Name="ZipCode" Type="varchar" MaxLength="15" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="UniversityPresident" Type="varchar" MaxLength="80" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'VirtualAdvisor2.dbo.UserDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="UserDetails">
+          <Key>
+            <PropertyRef Name="UserDetailsId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="UserDetailsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="SkypeId" Type="varchar" MaxLength="100" />
+          <Property Name="Passcode" Type="int" />
+          <Property Name="AppType" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'VirtualAdvisor2.dbo.CoursePreRequisites' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CoursePreRequisites">
+          <Key>
+            <PropertyRef Name="Course" />
+            <PropertyRef Name="Requires" />
+          </Key>
+          <Property Name="Course" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Requires" Type="varchar" MaxLength="80" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'VirtualAdvisor2.dbo.ProfessorCourses' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ProfessorCourses">
+          <Key>
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="CourseName" />
+          </Key>
+          <Property Name="StaffTypeDescription" Type="varchar" MaxLength="100" />
+          <Property Name="LastName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="DegreeDescription" Type="varchar" MaxLength="100" />
+          <Property Name="CourseCode" Type="varchar" MaxLength="80" />
+          <Property Name="CourseName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="CourseDescription" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'VirtualAdvisor2.dbo.StudentCourseHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="StudentCourseHistory">
+          <Key>
+            <PropertyRef Name="StudentId" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="CourseName" />
+          </Key>
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="CourseName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Grade" Type="varchar" MaxLength="3" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'VirtualAdvisor2.dbo.StudentsGPAByTerm' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="StudentsGPAByTerm">
+          <Key>
+            <PropertyRef Name="TermId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="TermId" Type="int" Nullable="false" />
+          <Property Name="TermAbbreviation" Type="varchar" MaxLength="10" />
+          <Property Name="DegreeDescription" Type="varchar" MaxLength="100" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="GPA" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'VirtualAdvisor2.dbo.StudentsGPACumulative' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="StudentsGPACumulative">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="DegreeDescription" Type="varchar" MaxLength="100" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="GPA" Type="decimal" Precision="3" Scale="2" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'VirtualAdvisor2.sys.database_firewall_rules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="start_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="end_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="create_date" Type="datetime" Nullable="false" />
+          <Property Name="modify_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__AdvisorSt__Staff__74444068">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="AdvisorStudent" Type="Self.AdvisorStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="AdvisorStudent">
+              <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AdvisorSt__Stude__73501C2F">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="AdvisorStudent" Type="Self.AdvisorStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="AdvisorStudent">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calendar__EventT__40C49C62">
+          <End Role="EventType" Type="Self.EventType" Multiplicity="1" />
+          <End Role="Calendar" Type="Self.Calendar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="EventTypeId" />
+            </Principal>
+            <Dependent Role="Calendar">
+              <PropertyRef Name="EventTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calendar__Univer__41B8C09B">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="Calendar" Type="Self.Calendar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityId" />
+            </Principal>
+            <Dependent Role="Calendar">
+              <PropertyRef Name="UniversityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Course__DegreePl__52E34C9D">
+          <End Role="DegreePlan" Type="Self.DegreePlan" Multiplicity="1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DegreePlan">
+              <PropertyRef Name="DegreePlanId" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="DegreePlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CoursePre__Cours__6F7F8B4B">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="CoursePrerequisite" Type="Self.CoursePrerequisite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="CoursePrerequisite">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CoursePre__Requi__7073AF84">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="CoursePrerequisite" Type="Self.CoursePrerequisite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="CoursePrerequisite">
+              <PropertyRef Name="RequiredCourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DegreePla__Unive__44952D46">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="DegreePlan" Type="Self.DegreePlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityId" />
+            </Principal>
+            <Dependent Role="DegreePlan">
+              <PropertyRef Name="UniversityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enrollmen__Enrol__00AA174D">
+          <End Role="EnrollmentStatusCode" Type="Self.EnrollmentStatusCode" Multiplicity="1" />
+          <End Role="EnrollmentStatus" Type="Self.EnrollmentStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EnrollmentStatusCode">
+              <PropertyRef Name="EnrollmentStatusCodeId" />
+            </Principal>
+            <Dependent Role="EnrollmentStatus">
+              <PropertyRef Name="EnrollmentStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enrollmen__Enrol__02925FBF">
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="1" />
+          <End Role="EnrollmentGrade" Type="Self.EnrollmentGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Enrollment">
+              <PropertyRef Name="EnrollmentId" />
+            </Principal>
+            <Dependent Role="EnrollmentGrade">
+              <PropertyRef Name="EnrollmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enrollmen__Enrol__7FB5F314">
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="1" />
+          <End Role="EnrollmentStatus" Type="Self.EnrollmentStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Enrollment">
+              <PropertyRef Name="EnrollmentId" />
+            </Principal>
+            <Dependent Role="EnrollmentStatus">
+              <PropertyRef Name="EnrollmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enrollmen__Secti__7BE56230">
+          <End Role="Section" Type="Self.Section" Multiplicity="1" />
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="SectionId" />
+            </Principal>
+            <Dependent Role="Enrollment">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enrollmen__Stude__7CD98669">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="Enrollment">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Section__CourseI__68D28DBC">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Section__StaffId__67DE6983">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Section__TermId__66EA454A">
+          <End Role="Term" Type="Self.Term" Multiplicity="1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="TermId" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="TermId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SectionRa__Ratin__6CA31EA0">
+          <End Role="SectionRatingScale" Type="Self.SectionRatingScale" Multiplicity="1" />
+          <End Role="SectionRating" Type="Self.SectionRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SectionRatingScale">
+              <PropertyRef Name="SectionRatingScaleId" />
+            </Principal>
+            <Dependent Role="SectionRating">
+              <PropertyRef Name="RatingScaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SectionRa__Secti__6BAEFA67">
+          <End Role="Section" Type="Self.Section" Multiplicity="1" />
+          <End Role="SectionRating" Type="Self.SectionRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="SectionId" />
+            </Principal>
+            <Dependent Role="SectionRating">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Staff__PersonId__57A801BA">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Staff__StaffType__589C25F3">
+          <End Role="StaffType" Type="Self.StaffType" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StaffType">
+              <PropertyRef Name="StaffTypeId" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="StaffTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StaffStat__Staff__5D60DB10">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="StaffStatus" Type="Self.StaffStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="StaffStatus">
+              <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StaffStat__Staff__5E54FF49">
+          <End Role="StaffStatusCode" Type="Self.StaffStatusCode" Multiplicity="1" />
+          <End Role="StaffStatus" Type="Self.StaffStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StaffStatusCode">
+              <PropertyRef Name="StaffStatusCodeId" />
+            </Principal>
+            <Dependent Role="StaffStatus">
+              <PropertyRef Name="StaffStatusCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__DegreeP__4C364F0E">
+          <End Role="DegreePlan" Type="Self.DegreePlan" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DegreePlan">
+              <PropertyRef Name="DegreePlanId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="DegreePlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__PersonI__4B422AD5">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__Univers__0662F0A3">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="UniversityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentDe__Stude__7720AD13">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="StudentDegreePlan" Type="Self.StudentDegreePlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="StudentDegreePlan">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentSt__Stude__4F12BBB9">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="StudentStatus" Type="Self.StudentStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="StudentStatus">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentSt__Stude__5006DFF2">
+          <End Role="StudentStatusCode" Type="Self.StudentStatusCode" Multiplicity="1" />
+          <End Role="StudentStatus" Type="Self.StudentStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentStatusCode">
+              <PropertyRef Name="StudentStatusCodeId" />
+            </Principal>
+            <Dependent Role="StudentStatus">
+              <PropertyRef Name="StudentStatusCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Term__University__3B0BC30C">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="Term" Type="Self.Term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityId" />
+            </Principal>
+            <Dependent Role="Term">
+              <PropertyRef Name="UniversityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetCurrentStaffStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="StaffId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCurrentStudentStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="StudentId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCurrentUniversityTerm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="UniversityId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCurrentUniversityTermId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="UniversityId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetStudentGPAByTerm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="decimal">
+          <Parameter Name="StudentId" Type="int" Mode="In" />
+          <Parameter Name="TermId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetStudentGPACumulative" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="decimal">
+          <Parameter Name="StudentId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="VirtualAdvisor2ModelStoreContainer">
+          <EntitySet Name="AdvisorStudent" EntityType="Self.AdvisorStudent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Calendar" EntityType="Self.Calendar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CoursePrerequisite" EntityType="Self.CoursePrerequisite" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DegreePlan" EntityType="Self.DegreePlan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Enrollment" EntityType="Self.Enrollment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EnrollmentStatus" EntityType="Self.EnrollmentStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EnrollmentStatusCode" EntityType="Self.EnrollmentStatusCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventType" EntityType="Self.EventType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GradingScale" EntityType="Self.GradingScale" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SectionRating" EntityType="Self.SectionRating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SectionRatingScale" EntityType="Self.SectionRatingScale" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StaffStatus" EntityType="Self.StaffStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StaffStatusCode" EntityType="Self.StaffStatusCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StaffType" EntityType="Self.StaffType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentDegreePlan" EntityType="Self.StudentDegreePlan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentStatus" EntityType="Self.StudentStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentStatusCode" EntityType="Self.StudentStatusCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Term" EntityType="Self.Term" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="University" EntityType="Self.University" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EnrollmentGrade" EntityType="Self.EnrollmentGrade" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [EnrollmentGrade].[EnrollmentId] AS [EnrollmentId], 
+    [EnrollmentGrade].[StaffId] AS [StaffId], 
+    [EnrollmentGrade].[CreditHoursAttempted] AS [CreditHoursAttempted], 
+    [EnrollmentGrade].[CreditHoursEarned] AS [CreditHoursEarned], 
+    [EnrollmentGrade].[Grade] AS [Grade]
+    FROM [dbo].[EnrollmentGrade] AS [EnrollmentGrade]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UserDetails" EntityType="Self.UserDetails" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserDetails].[UserDetailsId] AS [UserDetailsId], 
+    [UserDetails].[StudentId] AS [StudentId], 
+    [UserDetails].[SkypeId] AS [SkypeId], 
+    [UserDetails].[Passcode] AS [Passcode], 
+    [UserDetails].[AppType] AS [AppType]
+    FROM [dbo].[UserDetails] AS [UserDetails]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CoursePreRequisites" EntityType="Self.CoursePreRequisites" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CoursePreRequisites].[Course] AS [Course], 
+    [CoursePreRequisites].[Requires] AS [Requires]
+    FROM [dbo].[CoursePreRequisites] AS [CoursePreRequisites]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ProfessorCourses" EntityType="Self.ProfessorCourses" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ProfessorCourses].[StaffTypeDescription] AS [StaffTypeDescription], 
+    [ProfessorCourses].[LastName] AS [LastName], 
+    [ProfessorCourses].[FirstName] AS [FirstName], 
+    [ProfessorCourses].[DegreeDescription] AS [DegreeDescription], 
+    [ProfessorCourses].[CourseCode] AS [CourseCode], 
+    [ProfessorCourses].[CourseName] AS [CourseName], 
+    [ProfessorCourses].[CourseDescription] AS [CourseDescription]
+    FROM [dbo].[ProfessorCourses] AS [ProfessorCourses]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="StudentCourseHistory" EntityType="Self.StudentCourseHistory" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StudentCourseHistory].[StudentId] AS [StudentId], 
+    [StudentCourseHistory].[LastName] AS [LastName], 
+    [StudentCourseHistory].[FirstName] AS [FirstName], 
+    [StudentCourseHistory].[CourseName] AS [CourseName], 
+    [StudentCourseHistory].[Grade] AS [Grade]
+    FROM [dbo].[StudentCourseHistory] AS [StudentCourseHistory]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="StudentsGPAByTerm" EntityType="Self.StudentsGPAByTerm" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StudentsGPAByTerm].[TermId] AS [TermId], 
+    [StudentsGPAByTerm].[TermAbbreviation] AS [TermAbbreviation], 
+    [StudentsGPAByTerm].[DegreeDescription] AS [DegreeDescription], 
+    [StudentsGPAByTerm].[StudentId] AS [StudentId], 
+    [StudentsGPAByTerm].[GPA] AS [GPA]
+    FROM [dbo].[StudentsGPAByTerm] AS [StudentsGPAByTerm]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="StudentsGPACumulative" EntityType="Self.StudentsGPACumulative" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StudentsGPACumulative].[DegreeDescription] AS [DegreeDescription], 
+    [StudentsGPACumulative].[StudentId] AS [StudentId], 
+    [StudentsGPACumulative].[GPA] AS [GPA]
+    FROM [dbo].[StudentsGPACumulative] AS [StudentsGPACumulative]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" store:Type="Views" store:Schema="sys">
+            <DefiningQuery>SELECT 
+    [database_firewall_rules].[id] AS [id], 
+    [database_firewall_rules].[name] AS [name], 
+    [database_firewall_rules].[start_ip_address] AS [start_ip_address], 
+    [database_firewall_rules].[end_ip_address] AS [end_ip_address], 
+    [database_firewall_rules].[create_date] AS [create_date], 
+    [database_firewall_rules].[modify_date] AS [modify_date]
+    FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__AdvisorSt__Staff__74444068" Association="Self.FK__AdvisorSt__Staff__74444068">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="AdvisorStudent" EntitySet="AdvisorStudent" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AdvisorSt__Stude__73501C2F" Association="Self.FK__AdvisorSt__Stude__73501C2F">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="AdvisorStudent" EntitySet="AdvisorStudent" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calendar__EventT__40C49C62" Association="Self.FK__Calendar__EventT__40C49C62">
+            <End Role="EventType" EntitySet="EventType" />
+            <End Role="Calendar" EntitySet="Calendar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calendar__Univer__41B8C09B" Association="Self.FK__Calendar__Univer__41B8C09B">
+            <End Role="University" EntitySet="University" />
+            <End Role="Calendar" EntitySet="Calendar" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Course__DegreePl__52E34C9D" Association="Self.FK__Course__DegreePl__52E34C9D">
+            <End Role="DegreePlan" EntitySet="DegreePlan" />
+            <End Role="Course" EntitySet="Course" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CoursePre__Cours__6F7F8B4B" Association="Self.FK__CoursePre__Cours__6F7F8B4B">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="CoursePrerequisite" EntitySet="CoursePrerequisite" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CoursePre__Requi__7073AF84" Association="Self.FK__CoursePre__Requi__7073AF84">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="CoursePrerequisite" EntitySet="CoursePrerequisite" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DegreePla__Unive__44952D46" Association="Self.FK__DegreePla__Unive__44952D46">
+            <End Role="University" EntitySet="University" />
+            <End Role="DegreePlan" EntitySet="DegreePlan" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enrollmen__Enrol__00AA174D" Association="Self.FK__Enrollmen__Enrol__00AA174D">
+            <End Role="EnrollmentStatusCode" EntitySet="EnrollmentStatusCode" />
+            <End Role="EnrollmentStatus" EntitySet="EnrollmentStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enrollmen__Enrol__02925FBF" Association="Self.FK__Enrollmen__Enrol__02925FBF">
+            <End Role="Enrollment" EntitySet="Enrollment" />
+            <End Role="EnrollmentGrade" EntitySet="EnrollmentGrade" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enrollmen__Enrol__7FB5F314" Association="Self.FK__Enrollmen__Enrol__7FB5F314">
+            <End Role="Enrollment" EntitySet="Enrollment" />
+            <End Role="EnrollmentStatus" EntitySet="EnrollmentStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enrollmen__Secti__7BE56230" Association="Self.FK__Enrollmen__Secti__7BE56230">
+            <End Role="Section" EntitySet="Section" />
+            <End Role="Enrollment" EntitySet="Enrollment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enrollmen__Stude__7CD98669" Association="Self.FK__Enrollmen__Stude__7CD98669">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Enrollment" EntitySet="Enrollment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Section__CourseI__68D28DBC" Association="Self.FK__Section__CourseI__68D28DBC">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="Section" EntitySet="Section" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Section__StaffId__67DE6983" Association="Self.FK__Section__StaffId__67DE6983">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Section" EntitySet="Section" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Section__TermId__66EA454A" Association="Self.FK__Section__TermId__66EA454A">
+            <End Role="Term" EntitySet="Term" />
+            <End Role="Section" EntitySet="Section" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SectionRa__Ratin__6CA31EA0" Association="Self.FK__SectionRa__Ratin__6CA31EA0">
+            <End Role="SectionRatingScale" EntitySet="SectionRatingScale" />
+            <End Role="SectionRating" EntitySet="SectionRating" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SectionRa__Secti__6BAEFA67" Association="Self.FK__SectionRa__Secti__6BAEFA67">
+            <End Role="Section" EntitySet="Section" />
+            <End Role="SectionRating" EntitySet="SectionRating" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Staff__PersonId__57A801BA" Association="Self.FK__Staff__PersonId__57A801BA">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Staff" EntitySet="Staff" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Staff__StaffType__589C25F3" Association="Self.FK__Staff__StaffType__589C25F3">
+            <End Role="StaffType" EntitySet="StaffType" />
+            <End Role="Staff" EntitySet="Staff" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StaffStat__Staff__5D60DB10" Association="Self.FK__StaffStat__Staff__5D60DB10">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="StaffStatus" EntitySet="StaffStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StaffStat__Staff__5E54FF49" Association="Self.FK__StaffStat__Staff__5E54FF49">
+            <End Role="StaffStatusCode" EntitySet="StaffStatusCode" />
+            <End Role="StaffStatus" EntitySet="StaffStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__DegreeP__4C364F0E" Association="Self.FK__Student__DegreeP__4C364F0E">
+            <End Role="DegreePlan" EntitySet="DegreePlan" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__PersonI__4B422AD5" Association="Self.FK__Student__PersonI__4B422AD5">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__Univers__0662F0A3" Association="Self.FK__Student__Univers__0662F0A3">
+            <End Role="University" EntitySet="University" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentDe__Stude__7720AD13" Association="Self.FK__StudentDe__Stude__7720AD13">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="StudentDegreePlan" EntitySet="StudentDegreePlan" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentSt__Stude__4F12BBB9" Association="Self.FK__StudentSt__Stude__4F12BBB9">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="StudentStatus" EntitySet="StudentStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentSt__Stude__5006DFF2" Association="Self.FK__StudentSt__Stude__5006DFF2">
+            <End Role="StudentStatusCode" EntitySet="StudentStatusCode" />
+            <End Role="StudentStatus" EntitySet="StudentStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Term__University__3B0BC30C" Association="Self.FK__Term__University__3B0BC30C">
+            <End Role="University" EntitySet="University" />
+            <End Role="Term" EntitySet="Term" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VirtualAdvisor2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AdvisorStudent">
+          <Key>
+            <PropertyRef Name="AdvisorStudentId" />
+          </Key>
+          <Property Name="AdvisorStudentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StaffId" Type="Int32" Nullable="false" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Staff" Relationship="Self.FK__AdvisorSt__Staff__74444068" FromRole="AdvisorStudent" ToRole="Staff" />
+          <NavigationProperty Name="Student" Relationship="Self.FK__AdvisorSt__Stude__73501C2F" FromRole="AdvisorStudent" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Calendar">
+          <Key>
+            <PropertyRef Name="CalendarId" />
+          </Key>
+          <Property Name="CalendarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UniversityId" Type="Int32" Nullable="false" />
+          <Property Name="EventTypeId" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AllDay" Type="Boolean" />
+          <Property Name="CalendarDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EventType" Relationship="Self.FK__Calendar__EventT__40C49C62" FromRole="Calendar" ToRole="EventType" />
+          <NavigationProperty Name="University" Relationship="Self.FK__Calendar__Univer__41B8C09B" FromRole="Calendar" ToRole="University" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DegreePlanId" Type="Int32" Nullable="false" />
+          <Property Name="CourseName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CourseDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CreditHours" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="CourseCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DegreePlan" Relationship="Self.FK__Course__DegreePl__52E34C9D" FromRole="Course" ToRole="DegreePlan" />
+          <NavigationProperty Name="CoursePrerequisites" Relationship="Self.FK__CoursePre__Cours__6F7F8B4B" FromRole="Course" ToRole="CoursePrerequisite" />
+          <NavigationProperty Name="CoursePrerequisites1" Relationship="Self.FK__CoursePre__Requi__7073AF84" FromRole="Course" ToRole="CoursePrerequisite" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK__Section__CourseI__68D28DBC" FromRole="Course" ToRole="Section" />
+        </EntityType>
+        <EntityType Name="CoursePrerequisite">
+          <Key>
+            <PropertyRef Name="CoursePrerequisiteId" />
+          </Key>
+          <Property Name="CoursePrerequisiteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="RequiredCourseId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Course" Relationship="Self.FK__CoursePre__Cours__6F7F8B4B" FromRole="CoursePrerequisite" ToRole="Course" />
+          <NavigationProperty Name="Course1" Relationship="Self.FK__CoursePre__Requi__7073AF84" FromRole="CoursePrerequisite" ToRole="Course" />
+        </EntityType>
+        <EntityType Name="DegreePlan">
+          <Key>
+            <PropertyRef Name="DegreePlanId" />
+          </Key>
+          <Property Name="DegreePlanId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UniversityId" Type="Int32" Nullable="false" />
+          <Property Name="DegreeName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DegreeDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreditHoursRequired" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK__Course__DegreePl__52E34C9D" FromRole="DegreePlan" ToRole="Course" />
+          <NavigationProperty Name="University" Relationship="Self.FK__DegreePla__Unive__44952D46" FromRole="DegreePlan" ToRole="University" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Student__DegreeP__4C364F0E" FromRole="DegreePlan" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Enrollment">
+          <Key>
+            <PropertyRef Name="EnrollmentId" />
+          </Key>
+          <Property Name="EnrollmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SectionId" Type="Int32" Nullable="false" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EnrollmentGrades" Relationship="Self.FK__Enrollmen__Enrol__02925FBF" FromRole="Enrollment" ToRole="EnrollmentGrade" />
+          <NavigationProperty Name="EnrollmentStatus" Relationship="Self.FK__Enrollmen__Enrol__7FB5F314" FromRole="Enrollment" ToRole="EnrollmentStatus" />
+          <NavigationProperty Name="Section" Relationship="Self.FK__Enrollmen__Secti__7BE56230" FromRole="Enrollment" ToRole="Section" />
+          <NavigationProperty Name="Student" Relationship="Self.FK__Enrollmen__Stude__7CD98669" FromRole="Enrollment" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="EnrollmentStatu">
+          <Key>
+            <PropertyRef Name="EnrollmentId" />
+            <PropertyRef Name="EnrollmentStatusCode" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="EnrollmentId" Type="Int32" Nullable="false" />
+          <Property Name="EnrollmentStatusCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Enrollment" Relationship="Self.FK__Enrollmen__Enrol__7FB5F314" FromRole="EnrollmentStatus" ToRole="Enrollment" />
+          <NavigationProperty Name="EnrollmentStatusCode1" Relationship="Self.FK__Enrollmen__Enrol__00AA174D" FromRole="EnrollmentStatus" ToRole="EnrollmentStatusCode" />
+        </EntityType>
+        <EntityType Name="EnrollmentStatusCode">
+          <Key>
+            <PropertyRef Name="EnrollmentStatusCodeId" />
+          </Key>
+          <Property Name="EnrollmentStatusCodeId" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EnrollmentStatusDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EnrollmentStatus" Relationship="Self.FK__Enrollmen__Enrol__00AA174D" FromRole="EnrollmentStatusCode" ToRole="EnrollmentStatus" />
+        </EntityType>
+        <EntityType Name="EventType">
+          <Key>
+            <PropertyRef Name="EventTypeId" />
+          </Key>
+          <Property Name="EventTypeId" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EventTypeDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Calendars" Relationship="Self.FK__Calendar__EventT__40C49C62" FromRole="EventType" ToRole="Calendar" />
+        </EntityType>
+        <EntityType Name="GradingScale">
+          <Key>
+            <PropertyRef Name="Grade" />
+          </Key>
+          <Property Name="Grade" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumericValue" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="AffectsGPA" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MiddleInitial" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StreetAddress" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="StateName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Staffs" Relationship="Self.FK__Staff__PersonId__57A801BA" FromRole="Person" ToRole="Staff" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Student__PersonI__4B422AD5" FromRole="Person" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="SectionId" />
+          </Key>
+          <Property Name="SectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SectionName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TermId" Type="Int32" Nullable="false" />
+          <Property Name="StaffId" Type="Int32" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="MaxStudents" Type="Int32" />
+          <NavigationProperty Name="Course" Relationship="Self.FK__Section__CourseI__68D28DBC" FromRole="Section" ToRole="Course" />
+          <NavigationProperty Name="Enrollments" Relationship="Self.FK__Enrollmen__Secti__7BE56230" FromRole="Section" ToRole="Enrollment" />
+          <NavigationProperty Name="Staff" Relationship="Self.FK__Section__StaffId__67DE6983" FromRole="Section" ToRole="Staff" />
+          <NavigationProperty Name="Term" Relationship="Self.FK__Section__TermId__66EA454A" FromRole="Section" ToRole="Term" />
+          <NavigationProperty Name="SectionRatings" Relationship="Self.FK__SectionRa__Secti__6BAEFA67" FromRole="Section" ToRole="SectionRating" />
+        </EntityType>
+        <EntityType Name="SectionRating">
+          <Key>
+            <PropertyRef Name="RatingId" />
+          </Key>
+          <Property Name="RatingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SectionId" Type="Int32" Nullable="false" />
+          <Property Name="RatingScaleId" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RatingDate" Type="DateTime" Precision="3" />
+          <Property Name="Comments" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Section" Relationship="Self.FK__SectionRa__Secti__6BAEFA67" FromRole="SectionRating" ToRole="Section" />
+          <NavigationProperty Name="SectionRatingScale" Relationship="Self.FK__SectionRa__Ratin__6CA31EA0" FromRole="SectionRating" ToRole="SectionRatingScale" />
+        </EntityType>
+        <EntityType Name="SectionRatingScale">
+          <Key>
+            <PropertyRef Name="SectionRatingScaleId" />
+          </Key>
+          <Property Name="SectionRatingScaleId" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SectionRatingValue" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="SectionRatingScaleDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SectionRatings" Relationship="Self.FK__SectionRa__Ratin__6CA31EA0" FromRole="SectionRatingScale" ToRole="SectionRating" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="StaffId" />
+          </Key>
+          <Property Name="StaffId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="StaffTypeId" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StaffPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="StaffEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OfficeBuilding" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="OfficeNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AdvisorStudents" Relationship="Self.FK__AdvisorSt__Staff__74444068" FromRole="Staff" ToRole="AdvisorStudent" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__Staff__PersonId__57A801BA" FromRole="Staff" ToRole="Person" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK__Section__StaffId__67DE6983" FromRole="Staff" ToRole="Section" />
+          <NavigationProperty Name="StaffType" Relationship="Self.FK__Staff__StaffType__589C25F3" FromRole="Staff" ToRole="StaffType" />
+          <NavigationProperty Name="StaffStatus" Relationship="Self.FK__StaffStat__Staff__5D60DB10" FromRole="Staff" ToRole="StaffStatus" />
+        </EntityType>
+        <EntityType Name="StaffStatu">
+          <Key>
+            <PropertyRef Name="StaffId" />
+            <PropertyRef Name="StaffStatusCodeId" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="StaffId" Type="Int32" Nullable="false" />
+          <Property Name="StaffStatusCodeId" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Staff" Relationship="Self.FK__StaffStat__Staff__5D60DB10" FromRole="StaffStatus" ToRole="Staff" />
+          <NavigationProperty Name="StaffStatusCode" Relationship="Self.FK__StaffStat__Staff__5E54FF49" FromRole="StaffStatus" ToRole="StaffStatusCode" />
+        </EntityType>
+        <EntityType Name="StaffStatusCode">
+          <Key>
+            <PropertyRef Name="StaffStatusCodeId" />
+          </Key>
+          <Property Name="StaffStatusCodeId" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StaffStatusDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="StaffStatus" Relationship="Self.FK__StaffStat__Staff__5E54FF49" FromRole="StaffStatusCode" ToRole="StaffStatus" />
+        </EntityType>
+        <EntityType Name="StaffType">
+          <Key>
+            <PropertyRef Name="StaffTypeId" />
+          </Key>
+          <Property Name="StaffTypeId" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StaffTypeDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Staffs" Relationship="Self.FK__Staff__StaffType__589C25F3" FromRole="StaffType" ToRole="Staff" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UniversityId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="DegreePlanId" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AdvisorStudents" Relationship="Self.FK__AdvisorSt__Stude__73501C2F" FromRole="Student" ToRole="AdvisorStudent" />
+          <NavigationProperty Name="DegreePlan" Relationship="Self.FK__Student__DegreeP__4C364F0E" FromRole="Student" ToRole="DegreePlan" />
+          <NavigationProperty Name="Enrollments" Relationship="Self.FK__Enrollmen__Stude__7CD98669" FromRole="Student" ToRole="Enrollment" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__Student__PersonI__4B422AD5" FromRole="Student" ToRole="Person" />
+          <NavigationProperty Name="University" Relationship="Self.FK__Student__Univers__0662F0A3" FromRole="Student" ToRole="University" />
+          <NavigationProperty Name="StudentDegreePlans" Relationship="Self.FK__StudentDe__Stude__7720AD13" FromRole="Student" ToRole="StudentDegreePlan" />
+          <NavigationProperty Name="StudentStatus" Relationship="Self.FK__StudentSt__Stude__4F12BBB9" FromRole="Student" ToRole="StudentStatus" />
+        </EntityType>
+        <EntityType Name="StudentDegreePlan">
+          <Key>
+            <PropertyRef Name="StudentDegreePlanId" />
+          </Key>
+          <Property Name="StudentDegreePlanId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="DegreePlan" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Student" Relationship="Self.FK__StudentDe__Stude__7720AD13" FromRole="StudentDegreePlan" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="StudentStatu">
+          <Key>
+            <PropertyRef Name="StudentId" />
+            <PropertyRef Name="StudentStatusCodeId" />
+            <PropertyRef Name="StartDate" />
+            <PropertyRef Name="EndDate" />
+          </Key>
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="StudentStatusCodeId" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Student" Relationship="Self.FK__StudentSt__Stude__4F12BBB9" FromRole="StudentStatus" ToRole="Student" />
+          <NavigationProperty Name="StudentStatusCode" Relationship="Self.FK__StudentSt__Stude__5006DFF2" FromRole="StudentStatus" ToRole="StudentStatusCode" />
+        </EntityType>
+        <EntityType Name="StudentStatusCode">
+          <Key>
+            <PropertyRef Name="StudentStatusCodeId" />
+          </Key>
+          <Property Name="StudentStatusCodeId" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StudentStatusDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="StudentStatus" Relationship="Self.FK__StudentSt__Stude__5006DFF2" FromRole="StudentStatusCode" ToRole="StudentStatus" />
+        </EntityType>
+        <EntityType Name="Term">
+          <Key>
+            <PropertyRef Name="TermId" />
+          </Key>
+          <Property Name="TermId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UniversityId" Type="Int32" Nullable="false" />
+          <Property Name="TermAbbreviation" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DropDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="WithdrawalDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK__Section__TermId__66EA454A" FromRole="Term" ToRole="Section" />
+          <NavigationProperty Name="University" Relationship="Self.FK__Term__University__3B0BC30C" FromRole="Term" ToRole="University" />
+        </EntityType>
+        <EntityType Name="University">
+          <Key>
+            <PropertyRef Name="UniversityId" />
+          </Key>
+          <Property Name="UniversityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UniversityName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StreetAddress" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="StateName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UniversityPresident" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Calendars" Relationship="Self.FK__Calendar__Univer__41B8C09B" FromRole="University" ToRole="Calendar" />
+          <NavigationProperty Name="DegreePlans" Relationship="Self.FK__DegreePla__Unive__44952D46" FromRole="University" ToRole="DegreePlan" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Student__Univers__0662F0A3" FromRole="University" ToRole="Student" />
+          <NavigationProperty Name="Terms" Relationship="Self.FK__Term__University__3B0BC30C" FromRole="University" ToRole="Term" />
+        </EntityType>
+        <EntityType Name="EnrollmentGrade">
+          <Key>
+            <PropertyRef Name="EnrollmentId" />
+            <PropertyRef Name="StaffId" />
+            <PropertyRef Name="CreditHoursAttempted" />
+            <PropertyRef Name="CreditHoursEarned" />
+          </Key>
+          <Property Name="EnrollmentId" Type="Int32" Nullable="false" />
+          <Property Name="StaffId" Type="Int32" Nullable="false" />
+          <Property Name="CreditHoursAttempted" Type="Int32" Nullable="false" />
+          <Property Name="CreditHoursEarned" Type="Int32" Nullable="false" />
+          <Property Name="Grade" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Enrollment" Relationship="Self.FK__Enrollmen__Enrol__02925FBF" FromRole="EnrollmentGrade" ToRole="Enrollment" />
+        </EntityType>
+        <EntityType Name="UserDetail">
+          <Key>
+            <PropertyRef Name="UserDetailsId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="UserDetailsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="SkypeId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Passcode" Type="Int32" />
+          <Property Name="AppType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CoursePreRequisite1">
+          <Key>
+            <PropertyRef Name="Course" />
+            <PropertyRef Name="Requires" />
+          </Key>
+          <Property Name="Course" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Requires" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProfessorCours">
+          <Key>
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="CourseName" />
+          </Key>
+          <Property Name="StaffTypeDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DegreeDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CourseCode" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="CourseName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CourseDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StudentCourseHistory">
+          <Key>
+            <PropertyRef Name="StudentId" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="CourseName" />
+          </Key>
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CourseName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Grade" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StudentsGPAByTerm">
+          <Key>
+            <PropertyRef Name="TermId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="TermId" Type="Int32" Nullable="false" />
+          <Property Name="TermAbbreviation" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DegreeDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="GPA" Type="Decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="StudentsGPACumulative">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="DegreeDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="GPA" Type="Decimal" Precision="3" Scale="2" />
+        </EntityType>
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="start_ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="end_ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK__AdvisorSt__Staff__74444068">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="AdvisorStudent" Type="Self.AdvisorStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="AdvisorStudent">
+              <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AdvisorSt__Stude__73501C2F">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="AdvisorStudent" Type="Self.AdvisorStudent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="AdvisorStudent">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calendar__EventT__40C49C62">
+          <End Role="EventType" Type="Self.EventType" Multiplicity="1" />
+          <End Role="Calendar" Type="Self.Calendar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="EventTypeId" />
+            </Principal>
+            <Dependent Role="Calendar">
+              <PropertyRef Name="EventTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calendar__Univer__41B8C09B">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="Calendar" Type="Self.Calendar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityId" />
+            </Principal>
+            <Dependent Role="Calendar">
+              <PropertyRef Name="UniversityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Course__DegreePl__52E34C9D">
+          <End Role="DegreePlan" Type="Self.DegreePlan" Multiplicity="1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DegreePlan">
+              <PropertyRef Name="DegreePlanId" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="DegreePlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CoursePre__Cours__6F7F8B4B">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="CoursePrerequisite" Type="Self.CoursePrerequisite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="CoursePrerequisite">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CoursePre__Requi__7073AF84">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="CoursePrerequisite" Type="Self.CoursePrerequisite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="CoursePrerequisite">
+              <PropertyRef Name="RequiredCourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Section__CourseI__68D28DBC">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DegreePla__Unive__44952D46">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="DegreePlan" Type="Self.DegreePlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityId" />
+            </Principal>
+            <Dependent Role="DegreePlan">
+              <PropertyRef Name="UniversityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__DegreeP__4C364F0E">
+          <End Role="DegreePlan" Type="Self.DegreePlan" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DegreePlan">
+              <PropertyRef Name="DegreePlanId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="DegreePlanId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enrollmen__Enrol__02925FBF">
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="1" />
+          <End Role="EnrollmentGrade" Type="Self.EnrollmentGrade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Enrollment">
+              <PropertyRef Name="EnrollmentId" />
+            </Principal>
+            <Dependent Role="EnrollmentGrade">
+              <PropertyRef Name="EnrollmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enrollmen__Enrol__7FB5F314">
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="1" />
+          <End Role="EnrollmentStatus" Type="Self.EnrollmentStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Enrollment">
+              <PropertyRef Name="EnrollmentId" />
+            </Principal>
+            <Dependent Role="EnrollmentStatus">
+              <PropertyRef Name="EnrollmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enrollmen__Secti__7BE56230">
+          <End Role="Section" Type="Self.Section" Multiplicity="1" />
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="SectionId" />
+            </Principal>
+            <Dependent Role="Enrollment">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enrollmen__Stude__7CD98669">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="Enrollment">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Enrollmen__Enrol__00AA174D">
+          <End Role="EnrollmentStatusCode" Type="Self.EnrollmentStatusCode" Multiplicity="1" />
+          <End Role="EnrollmentStatus" Type="Self.EnrollmentStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EnrollmentStatusCode">
+              <PropertyRef Name="EnrollmentStatusCodeId" />
+            </Principal>
+            <Dependent Role="EnrollmentStatus">
+              <PropertyRef Name="EnrollmentStatusCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Staff__PersonId__57A801BA">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__PersonI__4B422AD5">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Section__StaffId__67DE6983">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Section__TermId__66EA454A">
+          <End Role="Term" Type="Self.Term" Multiplicity="1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="TermId" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="TermId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SectionRa__Secti__6BAEFA67">
+          <End Role="Section" Type="Self.Section" Multiplicity="1" />
+          <End Role="SectionRating" Type="Self.SectionRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="SectionId" />
+            </Principal>
+            <Dependent Role="SectionRating">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SectionRa__Ratin__6CA31EA0">
+          <End Role="SectionRatingScale" Type="Self.SectionRatingScale" Multiplicity="1" />
+          <End Role="SectionRating" Type="Self.SectionRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SectionRatingScale">
+              <PropertyRef Name="SectionRatingScaleId" />
+            </Principal>
+            <Dependent Role="SectionRating">
+              <PropertyRef Name="RatingScaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Staff__StaffType__589C25F3">
+          <End Role="StaffType" Type="Self.StaffType" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StaffType">
+              <PropertyRef Name="StaffTypeId" />
+            </Principal>
+            <Dependent Role="Staff">
+              <PropertyRef Name="StaffTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StaffStat__Staff__5D60DB10">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="StaffStatus" Type="Self.StaffStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="StaffStatus">
+              <PropertyRef Name="StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StaffStat__Staff__5E54FF49">
+          <End Role="StaffStatusCode" Type="Self.StaffStatusCode" Multiplicity="1" />
+          <End Role="StaffStatus" Type="Self.StaffStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StaffStatusCode">
+              <PropertyRef Name="StaffStatusCodeId" />
+            </Principal>
+            <Dependent Role="StaffStatus">
+              <PropertyRef Name="StaffStatusCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__Univers__0662F0A3">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="UniversityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentDe__Stude__7720AD13">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="StudentDegreePlan" Type="Self.StudentDegreePlan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="StudentDegreePlan">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentSt__Stude__4F12BBB9">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="StudentStatus" Type="Self.StudentStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="StudentStatus">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__StudentSt__Stude__5006DFF2">
+          <End Role="StudentStatusCode" Type="Self.StudentStatusCode" Multiplicity="1" />
+          <End Role="StudentStatus" Type="Self.StudentStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentStatusCode">
+              <PropertyRef Name="StudentStatusCodeId" />
+            </Principal>
+            <Dependent Role="StudentStatus">
+              <PropertyRef Name="StudentStatusCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Term__University__3B0BC30C">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="Term" Type="Self.Term" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityId" />
+            </Principal>
+            <Dependent Role="Term">
+              <PropertyRef Name="UniversityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VirtualAdvisor2Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AdvisorStudents" EntityType="Self.AdvisorStudent" />
+          <EntitySet Name="Calendars" EntityType="Self.Calendar" />
+          <EntitySet Name="Courses" EntityType="Self.Course" />
+          <EntitySet Name="CoursePrerequisites" EntityType="Self.CoursePrerequisite" />
+          <EntitySet Name="DegreePlans" EntityType="Self.DegreePlan" />
+          <EntitySet Name="Enrollments" EntityType="Self.Enrollment" />
+          <EntitySet Name="EnrollmentStatus" EntityType="Self.EnrollmentStatu" />
+          <EntitySet Name="EnrollmentStatusCodes" EntityType="Self.EnrollmentStatusCode" />
+          <EntitySet Name="EventTypes" EntityType="Self.EventType" />
+          <EntitySet Name="GradingScales" EntityType="Self.GradingScale" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="Sections" EntityType="Self.Section" />
+          <EntitySet Name="SectionRatings" EntityType="Self.SectionRating" />
+          <EntitySet Name="SectionRatingScales" EntityType="Self.SectionRatingScale" />
+          <EntitySet Name="Staffs" EntityType="Self.Staff" />
+          <EntitySet Name="StaffStatus" EntityType="Self.StaffStatu" />
+          <EntitySet Name="StaffStatusCodes" EntityType="Self.StaffStatusCode" />
+          <EntitySet Name="StaffTypes" EntityType="Self.StaffType" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <EntitySet Name="StudentDegreePlans" EntityType="Self.StudentDegreePlan" />
+          <EntitySet Name="StudentStatus" EntityType="Self.StudentStatu" />
+          <EntitySet Name="StudentStatusCodes" EntityType="Self.StudentStatusCode" />
+          <EntitySet Name="Terms" EntityType="Self.Term" />
+          <EntitySet Name="Universities" EntityType="Self.University" />
+          <EntitySet Name="EnrollmentGrades" EntityType="Self.EnrollmentGrade" />
+          <EntitySet Name="UserDetails" EntityType="Self.UserDetail" />
+          <EntitySet Name="CoursePreRequisites1" EntityType="Self.CoursePreRequisite1" />
+          <EntitySet Name="ProfessorCourses" EntityType="Self.ProfessorCours" />
+          <EntitySet Name="StudentCourseHistories" EntityType="Self.StudentCourseHistory" />
+          <EntitySet Name="StudentsGPAByTerms" EntityType="Self.StudentsGPAByTerm" />
+          <EntitySet Name="StudentsGPACumulatives" EntityType="Self.StudentsGPACumulative" />
+          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" />
+          <AssociationSet Name="FK__AdvisorSt__Staff__74444068" Association="Self.FK__AdvisorSt__Staff__74444068">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="AdvisorStudent" EntitySet="AdvisorStudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AdvisorSt__Stude__73501C2F" Association="Self.FK__AdvisorSt__Stude__73501C2F">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="AdvisorStudent" EntitySet="AdvisorStudents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calendar__EventT__40C49C62" Association="Self.FK__Calendar__EventT__40C49C62">
+            <End Role="EventType" EntitySet="EventTypes" />
+            <End Role="Calendar" EntitySet="Calendars" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calendar__Univer__41B8C09B" Association="Self.FK__Calendar__Univer__41B8C09B">
+            <End Role="University" EntitySet="Universities" />
+            <End Role="Calendar" EntitySet="Calendars" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Course__DegreePl__52E34C9D" Association="Self.FK__Course__DegreePl__52E34C9D">
+            <End Role="DegreePlan" EntitySet="DegreePlans" />
+            <End Role="Course" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CoursePre__Cours__6F7F8B4B" Association="Self.FK__CoursePre__Cours__6F7F8B4B">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="CoursePrerequisite" EntitySet="CoursePrerequisites" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CoursePre__Requi__7073AF84" Association="Self.FK__CoursePre__Requi__7073AF84">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="CoursePrerequisite" EntitySet="CoursePrerequisites" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Section__CourseI__68D28DBC" Association="Self.FK__Section__CourseI__68D28DBC">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Section" EntitySet="Sections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DegreePla__Unive__44952D46" Association="Self.FK__DegreePla__Unive__44952D46">
+            <End Role="University" EntitySet="Universities" />
+            <End Role="DegreePlan" EntitySet="DegreePlans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__DegreeP__4C364F0E" Association="Self.FK__Student__DegreeP__4C364F0E">
+            <End Role="DegreePlan" EntitySet="DegreePlans" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enrollmen__Enrol__02925FBF" Association="Self.FK__Enrollmen__Enrol__02925FBF">
+            <End Role="Enrollment" EntitySet="Enrollments" />
+            <End Role="EnrollmentGrade" EntitySet="EnrollmentGrades" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enrollmen__Enrol__7FB5F314" Association="Self.FK__Enrollmen__Enrol__7FB5F314">
+            <End Role="Enrollment" EntitySet="Enrollments" />
+            <End Role="EnrollmentStatus" EntitySet="EnrollmentStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enrollmen__Secti__7BE56230" Association="Self.FK__Enrollmen__Secti__7BE56230">
+            <End Role="Section" EntitySet="Sections" />
+            <End Role="Enrollment" EntitySet="Enrollments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enrollmen__Stude__7CD98669" Association="Self.FK__Enrollmen__Stude__7CD98669">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Enrollment" EntitySet="Enrollments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Enrollmen__Enrol__00AA174D" Association="Self.FK__Enrollmen__Enrol__00AA174D">
+            <End Role="EnrollmentStatusCode" EntitySet="EnrollmentStatusCodes" />
+            <End Role="EnrollmentStatus" EntitySet="EnrollmentStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Staff__PersonId__57A801BA" Association="Self.FK__Staff__PersonId__57A801BA">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Staff" EntitySet="Staffs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__PersonI__4B422AD5" Association="Self.FK__Student__PersonI__4B422AD5">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Section__StaffId__67DE6983" Association="Self.FK__Section__StaffId__67DE6983">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Section" EntitySet="Sections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Section__TermId__66EA454A" Association="Self.FK__Section__TermId__66EA454A">
+            <End Role="Term" EntitySet="Terms" />
+            <End Role="Section" EntitySet="Sections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SectionRa__Secti__6BAEFA67" Association="Self.FK__SectionRa__Secti__6BAEFA67">
+            <End Role="Section" EntitySet="Sections" />
+            <End Role="SectionRating" EntitySet="SectionRatings" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SectionRa__Ratin__6CA31EA0" Association="Self.FK__SectionRa__Ratin__6CA31EA0">
+            <End Role="SectionRatingScale" EntitySet="SectionRatingScales" />
+            <End Role="SectionRating" EntitySet="SectionRatings" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Staff__StaffType__589C25F3" Association="Self.FK__Staff__StaffType__589C25F3">
+            <End Role="StaffType" EntitySet="StaffTypes" />
+            <End Role="Staff" EntitySet="Staffs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StaffStat__Staff__5D60DB10" Association="Self.FK__StaffStat__Staff__5D60DB10">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="StaffStatus" EntitySet="StaffStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StaffStat__Staff__5E54FF49" Association="Self.FK__StaffStat__Staff__5E54FF49">
+            <End Role="StaffStatusCode" EntitySet="StaffStatusCodes" />
+            <End Role="StaffStatus" EntitySet="StaffStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__Univers__0662F0A3" Association="Self.FK__Student__Univers__0662F0A3">
+            <End Role="University" EntitySet="Universities" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentDe__Stude__7720AD13" Association="Self.FK__StudentDe__Stude__7720AD13">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="StudentDegreePlan" EntitySet="StudentDegreePlans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentSt__Stude__4F12BBB9" Association="Self.FK__StudentSt__Stude__4F12BBB9">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="StudentStatus" EntitySet="StudentStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__StudentSt__Stude__5006DFF2" Association="Self.FK__StudentSt__Stude__5006DFF2">
+            <End Role="StudentStatusCode" EntitySet="StudentStatusCodes" />
+            <End Role="StudentStatus" EntitySet="StudentStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Term__University__3B0BC30C" Association="Self.FK__Term__University__3B0BC30C">
+            <End Role="University" EntitySet="Universities" />
+            <End Role="Term" EntitySet="Terms" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VirtualAdvisor2ModelStoreContainer" CdmEntityContainer="VirtualAdvisor2Entities">
+          <EntitySetMapping Name="AdvisorStudents">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.AdvisorStudent">
+              <MappingFragment StoreEntitySet="AdvisorStudent">
+                <ScalarProperty Name="AdvisorStudentId" ColumnName="AdvisorStudentId" />
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Calendars">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.Calendar">
+              <MappingFragment StoreEntitySet="Calendar">
+                <ScalarProperty Name="CalendarId" ColumnName="CalendarId" />
+                <ScalarProperty Name="UniversityId" ColumnName="UniversityId" />
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="AllDay" ColumnName="AllDay" />
+                <ScalarProperty Name="CalendarDescription" ColumnName="CalendarDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="DegreePlanId" ColumnName="DegreePlanId" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="CourseDescription" ColumnName="CourseDescription" />
+                <ScalarProperty Name="CreditHours" ColumnName="CreditHours" />
+                <ScalarProperty Name="CourseCode" ColumnName="CourseCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CoursePrerequisites">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.CoursePrerequisite">
+              <MappingFragment StoreEntitySet="CoursePrerequisite">
+                <ScalarProperty Name="CoursePrerequisiteId" ColumnName="CoursePrerequisiteId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="RequiredCourseId" ColumnName="RequiredCourseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DegreePlans">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.DegreePlan">
+              <MappingFragment StoreEntitySet="DegreePlan">
+                <ScalarProperty Name="DegreePlanId" ColumnName="DegreePlanId" />
+                <ScalarProperty Name="UniversityId" ColumnName="UniversityId" />
+                <ScalarProperty Name="DegreeName" ColumnName="DegreeName" />
+                <ScalarProperty Name="DegreeDescription" ColumnName="DegreeDescription" />
+                <ScalarProperty Name="CreditHoursRequired" ColumnName="CreditHoursRequired" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Enrollments">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.Enrollment">
+              <MappingFragment StoreEntitySet="Enrollment">
+                <ScalarProperty Name="EnrollmentId" ColumnName="EnrollmentId" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EnrollmentStatus">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.EnrollmentStatu">
+              <MappingFragment StoreEntitySet="EnrollmentStatus">
+                <ScalarProperty Name="EnrollmentId" ColumnName="EnrollmentId" />
+                <ScalarProperty Name="EnrollmentStatusCode" ColumnName="EnrollmentStatusCode" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EnrollmentStatusCodes">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.EnrollmentStatusCode">
+              <MappingFragment StoreEntitySet="EnrollmentStatusCode">
+                <ScalarProperty Name="EnrollmentStatusCodeId" ColumnName="EnrollmentStatusCodeId" />
+                <ScalarProperty Name="EnrollmentStatusDescription" ColumnName="EnrollmentStatusDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventTypes">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.EventType">
+              <MappingFragment StoreEntitySet="EventType">
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                <ScalarProperty Name="EventTypeDescription" ColumnName="EventTypeDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GradingScales">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.GradingScale">
+              <MappingFragment StoreEntitySet="GradingScale">
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="NumericValue" ColumnName="NumericValue" />
+                <ScalarProperty Name="AffectsGPA" ColumnName="AffectsGPA" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleInitial" ColumnName="MiddleInitial" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="StreetAddress" ColumnName="StreetAddress" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sections">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.Section">
+              <MappingFragment StoreEntitySet="Section">
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+                <ScalarProperty Name="TermId" ColumnName="TermId" />
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="MaxStudents" ColumnName="MaxStudents" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SectionRatings">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.SectionRating">
+              <MappingFragment StoreEntitySet="SectionRating">
+                <ScalarProperty Name="RatingId" ColumnName="RatingId" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="RatingScaleId" ColumnName="RatingScaleId" />
+                <ScalarProperty Name="RatingDate" ColumnName="RatingDate" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SectionRatingScales">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.SectionRatingScale">
+              <MappingFragment StoreEntitySet="SectionRatingScale">
+                <ScalarProperty Name="SectionRatingScaleId" ColumnName="SectionRatingScaleId" />
+                <ScalarProperty Name="SectionRatingValue" ColumnName="SectionRatingValue" />
+                <ScalarProperty Name="SectionRatingScaleDescription" ColumnName="SectionRatingScaleDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staffs">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="StaffTypeId" ColumnName="StaffTypeId" />
+                <ScalarProperty Name="StaffPhone" ColumnName="StaffPhone" />
+                <ScalarProperty Name="StaffEmail" ColumnName="StaffEmail" />
+                <ScalarProperty Name="OfficeBuilding" ColumnName="OfficeBuilding" />
+                <ScalarProperty Name="OfficeNumber" ColumnName="OfficeNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StaffStatus">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.StaffStatu">
+              <MappingFragment StoreEntitySet="StaffStatus">
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="StaffStatusCodeId" ColumnName="StaffStatusCodeId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StaffStatusCodes">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.StaffStatusCode">
+              <MappingFragment StoreEntitySet="StaffStatusCode">
+                <ScalarProperty Name="StaffStatusCodeId" ColumnName="StaffStatusCodeId" />
+                <ScalarProperty Name="StaffStatusDescription" ColumnName="StaffStatusDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StaffTypes">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.StaffType">
+              <MappingFragment StoreEntitySet="StaffType">
+                <ScalarProperty Name="StaffTypeId" ColumnName="StaffTypeId" />
+                <ScalarProperty Name="StaffTypeDescription" ColumnName="StaffTypeDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="UniversityId" ColumnName="UniversityId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="DegreePlanId" ColumnName="DegreePlanId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentDegreePlans">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.StudentDegreePlan">
+              <MappingFragment StoreEntitySet="StudentDegreePlan">
+                <ScalarProperty Name="StudentDegreePlanId" ColumnName="StudentDegreePlanId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="DegreePlan" ColumnName="DegreePlan" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentStatus">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.StudentStatu">
+              <MappingFragment StoreEntitySet="StudentStatus">
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="StudentStatusCodeId" ColumnName="StudentStatusCodeId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentStatusCodes">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.StudentStatusCode">
+              <MappingFragment StoreEntitySet="StudentStatusCode">
+                <ScalarProperty Name="StudentStatusCodeId" ColumnName="StudentStatusCodeId" />
+                <ScalarProperty Name="StudentStatusDescription" ColumnName="StudentStatusDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Terms">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.Term">
+              <MappingFragment StoreEntitySet="Term">
+                <ScalarProperty Name="TermId" ColumnName="TermId" />
+                <ScalarProperty Name="UniversityId" ColumnName="UniversityId" />
+                <ScalarProperty Name="TermAbbreviation" ColumnName="TermAbbreviation" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="DropDate" ColumnName="DropDate" />
+                <ScalarProperty Name="WithdrawalDate" ColumnName="WithdrawalDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Universities">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.University">
+              <MappingFragment StoreEntitySet="University">
+                <ScalarProperty Name="UniversityId" ColumnName="UniversityId" />
+                <ScalarProperty Name="UniversityName" ColumnName="UniversityName" />
+                <ScalarProperty Name="StreetAddress" ColumnName="StreetAddress" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="UniversityPresident" ColumnName="UniversityPresident" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EnrollmentGrades">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.EnrollmentGrade">
+              <MappingFragment StoreEntitySet="EnrollmentGrade">
+                <ScalarProperty Name="EnrollmentId" ColumnName="EnrollmentId" />
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="CreditHoursAttempted" ColumnName="CreditHoursAttempted" />
+                <ScalarProperty Name="CreditHoursEarned" ColumnName="CreditHoursEarned" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserDetails">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.UserDetail">
+              <MappingFragment StoreEntitySet="UserDetails">
+                <ScalarProperty Name="UserDetailsId" ColumnName="UserDetailsId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="SkypeId" ColumnName="SkypeId" />
+                <ScalarProperty Name="Passcode" ColumnName="Passcode" />
+                <ScalarProperty Name="AppType" ColumnName="AppType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CoursePreRequisites1">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.CoursePreRequisite1">
+              <MappingFragment StoreEntitySet="CoursePreRequisites">
+                <ScalarProperty Name="Course" ColumnName="Course" />
+                <ScalarProperty Name="Requires" ColumnName="Requires" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProfessorCourses">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.ProfessorCours">
+              <MappingFragment StoreEntitySet="ProfessorCourses">
+                <ScalarProperty Name="StaffTypeDescription" ColumnName="StaffTypeDescription" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="DegreeDescription" ColumnName="DegreeDescription" />
+                <ScalarProperty Name="CourseCode" ColumnName="CourseCode" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="CourseDescription" ColumnName="CourseDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentCourseHistories">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.StudentCourseHistory">
+              <MappingFragment StoreEntitySet="StudentCourseHistory">
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentsGPAByTerms">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.StudentsGPAByTerm">
+              <MappingFragment StoreEntitySet="StudentsGPAByTerm">
+                <ScalarProperty Name="TermId" ColumnName="TermId" />
+                <ScalarProperty Name="TermAbbreviation" ColumnName="TermAbbreviation" />
+                <ScalarProperty Name="DegreeDescription" ColumnName="DegreeDescription" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="GPA" ColumnName="GPA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentsGPACumulatives">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.StudentsGPACumulative">
+              <MappingFragment StoreEntitySet="StudentsGPACumulative">
+                <ScalarProperty Name="DegreeDescription" ColumnName="DegreeDescription" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="GPA" ColumnName="GPA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="database_firewall_rules">
+            <EntityTypeMapping TypeName="VirtualAdvisor2Model.database_firewall_rules">
+              <MappingFragment StoreEntitySet="database_firewall_rules">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="start_ip_address" ColumnName="start_ip_address" />
+                <ScalarProperty Name="end_ip_address" ColumnName="end_ip_address" />
+                <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="modify_date" ColumnName="modify_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

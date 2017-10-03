@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0e3cdf3a4c7f4cd0ab7940383ce77ba1" Name="Diagram1">
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.AdvisorStudent" Width="1.5" PointX="7.5" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.Calendar" Width="1.5" PointX="3" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.Course" Width="1.5" PointX="5.25" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.CoursePrerequisite" Width="1.5" PointX="7.5" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.DegreePlan" Width="1.5" PointX="3" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.Enrollment" Width="1.5" PointX="9.75" PointY="17.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.EnrollmentStatu" Width="1.5" PointX="12" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.EnrollmentStatusCode" Width="1.5" PointX="9.75" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.EventType" Width="1.5" PointX="0.75" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.GradingScale" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.Person" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.Section" Width="1.5" PointX="7.5" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.SectionRating" Width="1.5" PointX="9.75" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.SectionRatingScale" Width="1.5" PointX="7.5" PointY="25.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.Staff" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.StaffStatu" Width="1.5" PointX="7.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.StaffStatusCode" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.StaffType" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.Student" Width="1.5" PointX="5.25" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.StudentDegreePlan" Width="1.5" PointX="7.5" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.StudentStatu" Width="1.5" PointX="10.5" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.StudentStatusCode" Width="1.5" PointX="8.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.Term" Width="1.5" PointX="3" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.University" Width="1.5" PointX="0.75" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.EnrollmentGrade" Width="1.5" PointX="12" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.UserDetail" Width="1.5" PointX="9.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.CoursePreRequisite1" Width="1.5" PointX="9.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.ProfessorCours" Width="1.5" PointX="10.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.StudentCourseHistory" Width="1.5" PointX="11.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.StudentsGPAByTerm" Width="1.5" PointX="11.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.StudentsGPACumulative" Width="1.5" PointX="12.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VirtualAdvisor2Model.database_firewall_rules" Width="1.5" PointX="12.75" PointY="10.875" IsExpanded="true" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__AdvisorSt__Staff__74444068" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__AdvisorSt__Stude__73501C2F" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Calendar__EventT__40C49C62" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Calendar__Univer__41B8C09B" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Course__DegreePl__52E34C9D" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__CoursePre__Cours__6F7F8B4B" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__CoursePre__Requi__7073AF84" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Section__CourseI__68D28DBC" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__DegreePla__Unive__44952D46" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Student__DegreeP__4C364F0E" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Enrollmen__Enrol__02925FBF" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Enrollmen__Enrol__7FB5F314" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Enrollmen__Secti__7BE56230" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Enrollmen__Stude__7CD98669" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Enrollmen__Enrol__00AA174D" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Staff__PersonId__57A801BA" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Student__PersonI__4B422AD5" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Section__StaffId__67DE6983" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Section__TermId__66EA454A" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__SectionRa__Secti__6BAEFA67" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__SectionRa__Ratin__6CA31EA0" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Staff__StaffType__589C25F3" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__StaffStat__Staff__5D60DB10" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__StaffStat__Staff__5E54FF49" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Student__Univers__0662F0A3" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__StudentDe__Stude__7720AD13" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__StudentSt__Stude__4F12BBB9" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__StudentSt__Stude__5006DFF2" ManuallyRouted="false" />
+        <AssociationConnector Association="VirtualAdvisor2Model.FK__Term__University__3B0BC30C" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
